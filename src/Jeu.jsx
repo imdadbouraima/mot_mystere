@@ -3,6 +3,16 @@ import { useState, useEffect } from "react";
 function Jeu({ pseudo }) {
 const [mot, setMot] = useState("");
 const [motMystere, setMotMystere] = useState("");
+const [tentatives, setTentatives] = useState([]);
+const [termine, setTermine] = useState(false);
+const [message, setMessage] = useState("");
+useEffect(() => {
+  fetch("/mots_solutions.json")
+    .then((reponse) => reponse.json())
+    .then((listeMots) => {
+const indexAleatoire = Math.floor(Math.random() * listeMots.length);
+setMotMystere(listeMots[indexAleatoire]);    });
+}, []);
 
   return (
     <>
@@ -11,9 +21,11 @@ const [motMystere, setMotMystere] = useState("");
       <p>Devine le mot mystère de 5 lettres.</p>
 
       <p>Il te reste 6 tentatives.</p>
-      <form onSubmit={(e) => {
+      <form  onSubmit={(e) => {
   e.preventDefault();
-  console.log(mot);
+
+  setTentatives([...tentatives, mot.toUpperCase()]);
+  setMot("");
 }}>
   <input
     type="text"
@@ -28,14 +40,16 @@ const [motMystere, setMotMystere] = useState("");
 </form>
 
       <div className="grille">
-        {Array.from({ length: 6 }, (_, ligne) => (
-          <div className="ligne" key={ligne}>
-            {Array.from({ length: 5 }, (_, colonne) => (
-              <div className="case" key={colonne}></div>
-            ))}
-          </div>
-        ))}
-      </div>
+  {Array.from({ length: 6 }, (_, ligne) => (
+    <div className="ligne" key={ligne}>
+      {Array.from({ length: 5 }, (_, colonne) => (
+        <div className="case" key={colonne}>
+          {tentatives[ligne]?.[colonne] || ""}
+        </div>
+      ))}
+    </div>
+  ))}
+</div>
     </>
   );
 }
