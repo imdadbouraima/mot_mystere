@@ -15,3 +15,19 @@
   height: 50px;
   border: 2px solid #888;
 }
+
+
+.case.vert {
+  background-color: #388e3c;
+  color: white;
+}
+
+.case.jaune {
+  background-color: #fbc02d;
+  color: black;
+}
+
+.case.gris {
+  background-color: #757575;
+  color: white;
+}

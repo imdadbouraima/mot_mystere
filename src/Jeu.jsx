@@ -1,5 +1,33 @@
 import { useState, useEffect } from "react";
 
+function comparerMots(motMystere, proposition) {
+  const couleurs = Array(5).fill("gris");
+  const lettresRestantes = motMystere.split("");
+
+  // 1. Repérer les lettres bien placées
+  for (let i = 0; i < 5; i++) {
+    if (proposition[i] === lettresRestantes[i]) {
+      couleurs[i] = "vert";
+      lettresRestantes[i] = null;
+    }
+  }
+
+  // 2. Repérer les lettres présentes mais mal placées
+  for (let i = 0; i < 5; i++) {
+    if (couleurs[i] === "vert") continue;
+
+    const index = lettresRestantes.indexOf(proposition[i]);
+
+    if (index !== -1) {
+      couleurs[i] = "jaune";
+      lettresRestantes[index] = null;
+    }
+  }
+
+  return couleurs;
+}
+
+
 function Jeu({ pseudo }) {
 const [mot, setMot] = useState("");
 const [motMystere, setMotMystere] = useState("");
@@ -24,8 +52,11 @@ setMotMystere(listeMots[indexAleatoire]);    });
       <form  onSubmit={(e) => {
   e.preventDefault();
 
-  setTentatives([...tentatives, mot.toUpperCase()]);
-  setMot("");
+  const proposition = mot.toUpperCase();
+const couleurs = comparerMots(motMystere.toUpperCase(), proposition);
+
+setTentatives([...tentatives, { mot: proposition, couleurs }]);
+setMot("");
 }}>
   <input
     type="text"
@@ -43,9 +74,12 @@ setMotMystere(listeMots[indexAleatoire]);    });
   {Array.from({ length: 6 }, (_, ligne) => (
     <div className="ligne" key={ligne}>
       {Array.from({ length: 5 }, (_, colonne) => (
-        <div className="case" key={colonne}>
-          {tentatives[ligne]?.[colonne] || ""}
-        </div>
+        <div
+  className={`case ${tentatives[ligne]?.couleurs[colonne] || ""}`}
+  key={colonne}
+>
+  {tentatives[ligne]?.mot[colonne] || ""}
+</div>
       ))}
     </div>
   ))}
