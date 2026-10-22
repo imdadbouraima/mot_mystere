@@ -1,4 +1,6 @@
+import "./App.css";
 import Accueil from "./Accueil";
+
 
 
 function App() {
