@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import Jeu from "./Jeu";
 
 function Accueil() {
   const [pseudo, setPseudo] = useState("");
@@ -14,8 +15,8 @@ function Accueil() {
   return (
     <>
       {partieCommencee ? (
-        <p>La partie a commencé avec le pseudo : {pseudo}</p>
-      ) : (
+  <Jeu pseudo={pseudo} />
+) : (
         <>
           <h1>Bienvenue dans le jeu de mot mystère</h1>
 
