@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-
+//4
 function comparerMots(motMystere, proposition) {
   const couleurs = Array(5).fill("gris");
   const lettresRestantes = motMystere.split("");
 
 
-  // 1. Repérer les lettres bien placées
+  
   for (let i = 0; i < 5; i++) {
     if (proposition[i] === lettresRestantes[i]) {
       couleurs[i] = "vert";
@@ -15,7 +15,7 @@ function comparerMots(motMystere, proposition) {
     }
   }
 
-  // 2. Repérer les lettres présentes mais mal placées
+  
   for (let i = 0; i < 5; i++) {
     if (couleurs[i] === "vert") continue;
 
@@ -29,6 +29,8 @@ function comparerMots(motMystere, proposition) {
 
   return couleurs;
 }
+
+//3
 
 async function verifierMot(proposition) {
   const url = new URL("https://fr.wiktionary.org/w/api.php");
@@ -91,6 +93,7 @@ const [termine, setTermine] = useState(false);
 const [message, setMessage] = useState("");
   const [score, setScore] = useState(0);
   const [motFinal, setMotFinal] = useState("");
+  //1
 useEffect(() => {
   fetch("/mots_solutions.json")
     .then((reponse) => reponse.json())
@@ -119,33 +122,52 @@ function recommencer() {
 }
 
   return (
-    <>
-      <h1>Bienvenue {pseudo} !</h1>
+    <main className="page jeu-page">
+      <header className="page-header">
+        <div className="brand">
+          <span className="brand-mark" aria-hidden="true">M</span>
+          <span>Mot mystère</span>
+        </div>
+      </header>
 
-      <p>Devine le mot mystère de 5 lettres.</p>
-      <p>Score : {score}</p>
-      
+      <section className="card game-card">
+        <div className="game-heading">
+          <p className="eyebrow">À toi de jouer</p>
+          <h1>Bonjour {pseudo} !</h1>
+          <p className="game-subtitle">Devine le mot mystère de 5 lettres.</p>
+        </div>
 
-<p>Il te reste {6 - tentatives.length} tentatives.</p>
+        <div className="stats" aria-label="Statistiques de la partie">
+          <div className="stat-card">
+            <span className="stat-label">Score</span>
+            <span className="stat-value">{score}</span>
+          </div>
+          <div className="stat-card">
+            <span className="stat-label">Essais restants</span>
+            <span className="stat-value">{6 - tentatives.length}</span>
+          </div>
+        </div>
 
-{message && <p>{message}</p>}
+        {message && <p className="message-box" role="status">{message}</p>}
 
-{termine && motFinal && (
-  <p>
-    Mot mystère :{" "}
-    <a
-      href={`https://fr.wiktionary.org/wiki/${encodeURIComponent(
-        motsAvecAccents[motFinal.toLowerCase()] || motFinal
-      )}`}
-      target="_blank"
-      rel="noreferrer"
-    >
-      {motsAvecAccents[motFinal.toLowerCase()] || motFinal}
-    </a>
-  </p>
-)}
+        {termine && motFinal && (
+          <p className="word-reveal">
+            Mot mystère :{" "}
+            <a
+              href={`https://fr.wiktionary.org/wiki/${encodeURIComponent(
+                motsAvecAccents[motFinal.toLowerCase()] || motFinal
+              )}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {motsAvecAccents[motFinal.toLowerCase()] || motFinal}
+            </a>
+          </p>
+        )}
 
-<form 
+        <form
+          className="guess-form"
+          //2
 onSubmit={async (e) => {
   e.preventDefault();
 
@@ -205,52 +227,65 @@ setMotFinal(motMystere);
   }
 }}
 >
+          <input
+            type="text"
+            aria-label="Proposition de cinq lettres"
+            placeholder="ABCDE"
+            value={mot}
+            onChange={(e) => setMot(e.target.value)}
+            maxLength={5}
+            minLength={5}
+            required
+            disabled={termine || verificationEnCours}
+          />
+          <button
+            className="button button-primary"
+            type="submit"
+            disabled={termine || verificationEnCours}
+          >
+            {verificationEnCours ? "Vérification..." : "Valider"}
+          </button>
+        </form>
 
+        <div className="game-actions">
+          <button
+            className="button button-secondary"
+            type="button"
+            onClick={() => navigate("/")}
+          >
+            Retour à l'accueil
+          </button>
+          {termine && (
+            <button
+              className="button button-secondary"
+              type="button"
+              onClick={recommencer}
+            >
+              Recommencer
+            </button>
+          )}
+        </div>
 
-
-  <input
-    type="text"
-    value={mot}
-    onChange={(e) => setMot(e.target.value)}
-    maxLength={5}
-    minLength={5}
-    required
-disabled={termine || verificationEnCours}  />
-  <button type="submit" disabled={termine || verificationEnCours}>
-  {verificationEnCours ? "Vérification..." : "Valider"}
-</button>
-<button type="button" onClick={() => navigate("/")}>
-  Retour à l'accueil
-</button>
-</form>
- 
-
-{termine && (
-  <button type="button" onClick={recommencer}>
-    Recommencer
-  </button>
-  
-)}
-
-      <div className="grille">
-  {Array.from({ length: 6 }, (_, ligne) => (
-    <div className="ligne" key={ligne}>
-      {Array.from({ length: 5 }, (_, colonne) => (
-        <div
-  className={`case ${
-  tentatives[ligne]?.couleurs[colonne] ||
-  (ligne === tentatives.length && motRefuse ? "refuse" : "")
-}`}
-  key={colonne}
->
-  {tentatives[ligne]?.mot[colonne] ||
-  (ligne === tentatives.length ? motRefuse[colonne] || "" : "")}
-</div>
-      ))}
-    </div>
-  ))}
-</div>
-    </>
+        <div className="grille" aria-label="Grille des tentatives">
+          {Array.from({ length: 6 }, (_, ligne) => (
+            <div className="ligne" key={ligne}>
+              {Array.from({ length: 5 }, (_, colonne) => (
+                <div
+                  className={`case ${
+                    tentatives[ligne]?.couleurs[colonne] ||
+                    (ligne === tentatives.length && motRefuse ? "refuse" : "")
+                  }`}
+                  key={colonne}
+                >
+                  {tentatives[ligne]?.mot[colonne] ||
+                    (ligne === tentatives.length ? motRefuse[colonne] || "" : "")}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </section>
+    </main>
   );
 }
 
