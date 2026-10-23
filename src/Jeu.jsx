@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 function comparerMots(motMystere, proposition) {
@@ -76,7 +77,11 @@ const motsAvecAccents = {
   ecran: "écran"
 };
 
-function Jeu({ pseudo }) {
+function Jeu() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const pseudo = location.state?.pseudo || localStorage.getItem("pseudo") || "";
 const [mot, setMot] = useState("");
 const [verificationEnCours, setVerificationEnCours] = useState(false);
 const [motRefuse, setMotRefuse] = useState("");
@@ -213,6 +218,9 @@ setMotFinal(motMystere);
 disabled={termine || verificationEnCours}  />
   <button type="submit" disabled={termine || verificationEnCours}>
   {verificationEnCours ? "Vérification..." : "Valider"}
+</button>
+<button type="button" onClick={() => navigate("/")}>
+  Retour à l'accueil
 </button>
 </form>
  
