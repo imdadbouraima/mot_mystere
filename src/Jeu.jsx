@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Grille from "./components/Grille";
 import Formulaire from "./components/Formulaire";
 import Resultat from "./components/Resultat";
+import Clavier from "./components/Clavier";
 
 import {
   chargerMotMystere,
@@ -28,6 +29,7 @@ function Jeu() {
   const [motRefuse, setMotRefuse] = useState("");
   const [motMystere, setMotMystere] = useState("");
   const [tentatives, setTentatives] = useState([]);
+  const [couleursLettres, setCouleursLettres] = useState({});
   const [termine, setTermine] = useState(false);
   const [message, setMessage] = useState("");
   const [score, setScore] = useState(0);
@@ -46,7 +48,7 @@ function Jeu() {
 
   // Validation d'une proposition
   async function validerProposition(e) {
-    e.preventDefault();
+  e?.preventDefault();
 
     if (verificationEnCours || termine || !motMystere) {
       return;
@@ -74,6 +76,29 @@ function Jeu() {
         motMystere.toUpperCase(),
         proposition
       );
+      setCouleursLettres((anciennesCouleurs) => {
+  const nouvellesCouleurs = { ...anciennesCouleurs };
+
+  proposition.split("").forEach((lettre, index) => {
+    const couleurActuelle = nouvellesCouleurs[lettre];
+    const nouvelleCouleur = couleurs[index];
+
+    const priorite = {
+      gris: 1,
+      jaune: 2,
+      vert: 3
+    };
+
+    if (
+      !couleurActuelle ||
+      priorite[nouvelleCouleur] > priorite[couleurActuelle]
+    ) {
+      nouvellesCouleurs[lettre] = nouvelleCouleur;
+    }
+  });
+
+  return nouvellesCouleurs;
+});
 
       const nouvellesTentatives = [
         ...tentatives,
@@ -112,6 +137,26 @@ function Jeu() {
     }
   }
 
+  function gererTouche(touche) {
+  if (touche === "ENTRÉE") {
+    validerProposition();
+    return;
+  }
+
+  if (touche === "EFFACER") {
+    setMot((ancienMot) => ancienMot.slice(0, -1));
+    return;
+  }
+
+  setMot((ancienMot) => {
+    if (ancienMot.length >= 5) {
+      return ancienMot;
+    }
+
+    return ancienMot + touche;
+  });
+}
+
   // Nouvelle partie
   async function recommencer() {
     setMot("");
@@ -121,6 +166,7 @@ function Jeu() {
     setTermine(false);
     setMessage("");
     setScore(0);
+    setCouleursLettres({});
 
     try {
       const nouveauMot = await chargerMotMystere();
@@ -171,12 +217,20 @@ function Jeu() {
         />
 
         <Formulaire
-          mot={mot}
-          setMot={setMot}
-          onValider={validerProposition}
-          termine={termine}
-          verificationEnCours={verificationEnCours}
-        />
+  mot={mot}
+  setMot={setMot}
+  onValider={validerProposition}
+  termine={termine}
+  verificationEnCours={verificationEnCours}
+/>
+
+<Clavier
+  onTouche={gererTouche}
+  termine={termine}
+  verificationEnCours={verificationEnCours}
+  couleursLettres={couleursLettres}
+
+/>
 
         <div className="game-actions">
           <button
