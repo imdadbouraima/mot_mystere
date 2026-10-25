@@ -1,20 +1,20 @@
 export function comparerMots(motMystere, proposition) {
-  const couleurs = Array(5).fill("gris");
-  const lettresRestantes = motMystere.split("");
+  const cible = motMystere.toUpperCase();
+  const essai = proposition.toUpperCase();
+  const couleurs = Array(cible.length).fill("gris");
+  const lettresRestantes = cible.split("");
 
-  // Lettres bien placées : vert
-  for (let i = 0; i < 5; i++) {
-    if (proposition[i] === lettresRestantes[i]) {
+  for (let i = 0; i < cible.length; i++) {
+    if (essai[i] === lettresRestantes[i]) {
       couleurs[i] = "vert";
       lettresRestantes[i] = null;
     }
   }
 
-  // Lettres présentes mais mal placées : jaune
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < cible.length; i++) {
     if (couleurs[i] === "vert") continue;
 
-    const index = lettresRestantes.indexOf(proposition[i]);
+    const index = lettresRestantes.indexOf(essai[i]);
 
     if (index !== -1) {
       couleurs[i] = "jaune";

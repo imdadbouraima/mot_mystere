@@ -523,3 +523,285 @@ h2 {
     transform: translateX(-5px);
   }
 }
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 14px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.site-nav a,
+.brand {
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+.site-nav a:hover {
+  color: var(--color-green);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.content-page {
+  max-width: 900px;
+}
+
+.content-page h1 {
+  margin-bottom: 24px;
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.content-page .card > p:not(.eyebrow) {
+  color: var(--color-muted);
+  line-height: 1.75;
+}
+
+.pseudo-label {
+  display: block;
+  margin: 0 0 8px;
+  color: var(--color-ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.pseudo-input,
+.settings-row select,
+.filter-row select,
+.player-select select {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid #dfe4d9;
+  border-radius: 10px;
+  color: var(--color-ink);
+  background: white;
+}
+
+.pseudo-input {
+  width: 100%;
+  margin-bottom: 22px;
+}
+
+.daily-card,
+.settings-panel {
+  margin-top: 18px;
+  padding: 22px;
+  border: 1px solid var(--color-line);
+  border-radius: 16px;
+  background: #fafbf7;
+}
+
+.daily-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.daily-card h2,
+.settings-panel h2 {
+  margin-bottom: 8px;
+  font-size: 20px;
+}
+
+.daily-card p:last-child {
+  margin-bottom: 0;
+  color: var(--color-muted);
+  font-size: 14px;
+}
+
+.settings-panel {
+  display: grid;
+  gap: 15px;
+}
+
+.settings-panel h2 {
+  margin: 0;
+}
+
+.settings-row,
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--color-ink);
+  font-size: 14px;
+}
+
+.checkbox-label {
+  justify-content: flex-start;
+}
+
+.checkbox-label input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-green);
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.filter-row label,
+.player-select {
+  display: grid;
+  gap: 6px;
+  color: var(--color-muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+
+th,
+td {
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--color-line);
+  white-space: nowrap;
+}
+
+th {
+  color: var(--color-muted);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.empty-state {
+  padding: 28px;
+  color: var(--color-muted);
+  text-align: center;
+  white-space: normal;
+}
+
+.storage-note {
+  margin: 18px 0 0;
+  font-size: 12px;
+}
+
+.player-select {
+  max-width: 320px;
+  margin-bottom: 22px;
+}
+
+.stats-page {
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+}
+
+.distribution {
+  display: grid;
+  gap: 12px;
+  max-width: 520px;
+}
+
+.distribution-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 28px;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.distribution-track {
+  height: 16px;
+  overflow: hidden;
+  border-radius: 9px;
+  background: #edf0e9;
+}
+
+.distribution-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-green);
+}
+
+.example-word {
+  display: flex;
+  gap: 8px;
+  margin: 18px 0 22px;
+}
+
+.example-word .case {
+  width: 54px;
+  height: 54px;
+}
+
+.rules-list {
+  display: grid;
+  gap: 12px;
+  padding: 0;
+  list-style: none;
+}
+
+.rules-list li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--color-muted);
+  line-height: 1.6;
+}
+
+.rules-list strong {
+  color: var(--color-ink);
+}
+
+.legend-swatch {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  border-radius: 5px;
+}
+
+.legend-swatch.vert { background: #438b5e; }
+.legend-swatch.jaune { background: #edc65d; }
+.legend-swatch.gris { background: #87918a; }
+
+.countdown {
+  display: block;
+  margin-top: 7px;
+  color: var(--color-green-dark);
+  font-weight: 700;
+}
+
+@media (max-width: 600px) {
+  .page-header {
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .site-nav {
+    gap: 8px;
+    font-size: 12px;
+  }
+
+  .daily-card {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .daily-card .button {
+    width: 100%;
+  }
+
+  .settings-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

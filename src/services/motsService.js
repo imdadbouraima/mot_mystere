@@ -6,8 +6,9 @@ export const motsAvecAccents = {
   ecran: "écran"
 };
 
-export async function chargerMotMystere() {
-  const reponse = await fetch("/mots_solutions.json");
+export async function chargerMotMystere(longueur = 5) {
+  const fichier = longueur === 5 ? "mots_solutions.json" : `mots_solutions_${longueur}.json`;
+  const reponse = await fetch(`/${fichier}`);
 
   if (!reponse.ok) {
     throw new Error("Impossible de charger les mots");
@@ -15,15 +16,40 @@ export async function chargerMotMystere() {
 
   const listeMots = await reponse.json();
 
-  if (!listeMots.length) {
+  if (!Array.isArray(listeMots) || !listeMots.length) {
     throw new Error("La liste des mots est vide");
   }
 
-  const indexAleatoire = Math.floor(
-    Math.random() * listeMots.length
-  );
+  const motsValides = listeMots.filter((mot) => typeof mot === "string" && mot.length === longueur);
+  if (!motsValides.length) throw new Error(`Aucun mot de ${longueur} lettres disponible.`);
+  const indexAleatoire = Math.floor(Math.random() * motsValides.length);
 
-  return listeMots[indexAleatoire];
+  return motsValides[indexAleatoire];
+}
+
+export async function chargerMotDuJour(date = new Date()) {
+  const liste = await chargerListeMots(5);
+  const jour = date.toISOString().slice(0, 10);
+  const hash = [...jour].reduce((total, caractere) => (total * 31 + caractere.charCodeAt(0)) >>> 0, 0);
+  return liste[hash % liste.length];
+}
+
+async function chargerListeMots(longueur) {
+  const fichier = longueur === 5 ? "mots_solutions.json" : `mots_solutions_${longueur}.json`;
+  const reponse = await fetch(`/${fichier}`);
+  if (!reponse.ok) throw new Error("Impossible de charger les mots");
+  const liste = await reponse.json();
+  if (!Array.isArray(liste)) throw new Error("La liste de mots est invalide");
+  return liste.filter((mot) => typeof mot === "string" && mot.length === longueur);
+}
+
+export function obtenirDateUTC(date = new Date()) {
+  return date.toISOString().slice(0, 10);
+}
+
+export function obtenirTempsAvantMinuitUTC(date = new Date()) {
+  const prochainMinuit = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + 1);
+  return Math.max(0, prochainMinuit - date.getTime());
 }
 
 export async function verifierMot(proposition) {

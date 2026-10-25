@@ -3,18 +3,19 @@ function Formulaire({
   setMot,
   onValider,
   termine,
-  verificationEnCours
+  verificationEnCours,
+  longueur
 }) {
   return (
     <form className="guess-form" onSubmit={onValider}>
       <input
         type="text"
-        aria-label="Proposition de cinq lettres"
-        placeholder="ABCDE"
+        aria-label={`Proposition de ${longueur} lettres`}
+        placeholder={"_".repeat(longueur)}
         value={mot}
         onChange={(e) => setMot(e.target.value)}
-        maxLength={5}
-        minLength={5}
+        maxLength={longueur}
+        minLength={longueur}
         required
         disabled={termine || verificationEnCours}
       />

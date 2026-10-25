@@ -1,13 +1,14 @@
 
 import Case from "./Case";
 
-function Ligne({ tentative, motRefuse }) {
+function Ligne({ tentative, motRefuse, longueur = 5, motEnCours = "" }) {
   return (
     <div className={`ligne ${motRefuse ? "ligne-refuse" : ""}`}>
-      {Array.from({ length: 5 }, (_, colonne) => {
+      {Array.from({ length: longueur }, (_, colonne) => {
         const lettre =
           tentative?.mot[colonne] ||
           motRefuse?.[colonne] ||
+          motEnCours?.[colonne] ||
           "";
 
         const couleur =
