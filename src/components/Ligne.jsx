@@ -1,8 +1,9 @@
+
 import Case from "./Case";
 
 function Ligne({ tentative, motRefuse }) {
   return (
-    <div className="ligne">
+    <div className={`ligne ${motRefuse ? "ligne-refuse" : ""}`}>
       {Array.from({ length: 5 }, (_, colonne) => {
         const lettre =
           tentative?.mot[colonne] ||
@@ -18,6 +19,8 @@ function Ligne({ tentative, motRefuse }) {
             key={colonne}
             lettre={lettre}
             couleur={couleur}
+            delai={colonne * 200}
+            animationActive={Boolean(tentative)}
           />
         );
       })}

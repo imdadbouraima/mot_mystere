@@ -358,9 +358,7 @@ h2 {
 
 .case:not(:empty) {
   border-color: #b9c8b9;
-  animation: letter-pop 180ms ease-out;
 }
-
 .case.vert,
 .case.jaune,
 .case.gris,
@@ -484,4 +482,44 @@ h2 {
 .clavier-ligne button.gris {
   color: #fff;
   background: #87918a;
+}
+
+.ligne-refuse {
+  animation: secousse 300ms ease-in-out;
+}
+
+.case-retournee {
+  animation: retournement 500ms ease-in-out both;
+  transform-style: preserve-3d;
+}
+
+@keyframes retournement {
+  0% {
+    transform: rotateX(0deg);
+  }
+  50% {
+    transform: rotateX(90deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
+@keyframes secousse {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-5px);
+  }
+
+  50% {
+    transform: translateX(5px);
+  }
+
+  75% {
+    transform: translateX(-5px);
+  }
 }

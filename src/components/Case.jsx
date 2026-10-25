@@ -1,6 +1,10 @@
-function Case({ lettre, couleur }) {
+
+function Case({ lettre, couleur, delai, animationActive }) {
   return (
-    <div className={`case ${couleur || ""}`}>
+    <div
+      className={`case ${couleur || ""} ${animationActive ? "case-retournee" : ""}`}
+      style={{ animationDelay: `${delai}ms` }}
+    >
       {lettre}
     </div>
   );
